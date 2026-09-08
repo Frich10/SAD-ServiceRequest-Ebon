@@ -42,7 +42,7 @@ async function loadRequests() {
   const { data, error } = await supabaseClient
     .from("service_requests")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("id", { ascending: true });
 
   if (error) {
     alert("Error loading requests: " + error.message);
@@ -108,7 +108,9 @@ function applyFilters() {
   if (searchTerm) {
     filtered = filtered.filter(r =>
       r.requester_name.toLowerCase().includes(searchTerm) ||
-      r.description.toLowerCase().includes(searchTerm)
+      r.description.toLowerCase().includes(searchTerm) ||
+      r.priority.toLowerCase().includes(searchTerm) ||
+      r.status.toLowerCase().includes(searchTerm)
     );
   }
 
