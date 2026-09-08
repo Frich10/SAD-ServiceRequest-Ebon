@@ -1,30 +1,16 @@
-// js/app.js
-// -----------------------------------------------------------------------
-// Core application logic for index.html:
-//   - Dashboard summary counts
-//   - CRUD: Create, Read, Update, Delete service requests
-//   - Search (requester name / description)
-//   - Filter (status, priority)
-//   - Business rule validation (BR-01 to BR-06, BR-09)
-//   - Optional: Request Analytics (bonus)
-// -----------------------------------------------------------------------
 
 let currentUser = null;
-let allRequests = []; // cached copy of the last full fetch, used for client-side search/filter
+let allRequests = []; 
 
-// ---------------------------------------------------------------------
-// INITIALIZATION
-// ---------------------------------------------------------------------
 (async function init() {
   const session = await requireSession();
-  if (!session) return; // requireSession() already redirected to login.html
+  if (!session) return; 
 
   currentUser = session.user;
   document.getElementById("user-email").textContent = currentUser.email;
 
   await loadRequests();
 
-  // Wire up static UI events
   document.getElementById("new-request-btn").addEventListener("click", openCreateModal);
   document.getElementById("request-form").addEventListener("submit", handleFormSubmit);
   document.getElementById("cancel-btn").addEventListener("click", closeModal);
@@ -35,9 +21,6 @@ let allRequests = []; // cached copy of the last full fetch, used for client-sid
   document.getElementById("confirm-delete-no").addEventListener("click", closeDeleteModal);
 })();
 
-// ---------------------------------------------------------------------
-// READ: fetch all requests, render table + dashboard + analytics
-// ---------------------------------------------------------------------
 async function loadRequests() {
   const { data, error } = await supabaseClient
     .from("service_requests")
@@ -52,7 +35,7 @@ async function loadRequests() {
   allRequests = data || [];
   renderDashboard(allRequests);
   renderAnalytics(allRequests);
-  applyFilters(); // renders the table using current search/filter state
+  applyFilters(); 
 }
 
 function renderDashboard(requests) {
@@ -67,7 +50,6 @@ function renderDashboard(requests) {
   document.getElementById("stat-completed").textContent = completed;
 }
 
-// Bonus: Request Analytics by category and priority (values from DB, not hard-coded)
 function renderAnalytics(requests) {
   const byCategory = {};
   const byPriority = {};
@@ -95,9 +77,6 @@ function renderAnalytics(requests) {
   });
 }
 
-// ---------------------------------------------------------------------
-// SEARCH + FILTER (client-side, operates on the cached allRequests array)
-// ---------------------------------------------------------------------
 function applyFilters() {
   const searchTerm = document.getElementById("search-input").value.trim().toLowerCase();
   const statusFilter = document.getElementById("status-filter").value;
@@ -151,7 +130,6 @@ function renderTable(requests) {
     tbody.appendChild(tr);
   });
 
-  // Wire up row action buttons
   tbody.querySelectorAll(".edit-btn").forEach(btn =>
     btn.addEventListener("click", () => openEditModal(btn.dataset.id))
   );
@@ -166,9 +144,6 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-// ---------------------------------------------------------------------
-// CREATE / UPDATE MODAL
-// ---------------------------------------------------------------------
 function openCreateModal() {
   document.getElementById("modal-title").textContent = "New Service Request";
   document.getElementById("request-id").value = "";
@@ -178,7 +153,6 @@ function openCreateModal() {
   document.getElementById("description").value = "";
   document.getElementById("priority").value = "Low";
 
-  // Status field only shown/editable when editing an existing request (BR-06)
   document.getElementById("status-field-group").style.display = "none";
 
   document.getElementById("form-error").textContent = "";
@@ -208,7 +182,6 @@ function closeModal() {
   document.getElementById("request-modal").classList.add("hidden");
 }
 
-// Validate against the business rules (BR-01 to BR-05)
 function validateForm(values) {
   if (!values.requester_name) return "Requester name cannot be empty. (BR-01)";
   if (!values.department) return "Department must be provided. (BR-02)";
@@ -239,7 +212,7 @@ async function handleFormSubmit(e) {
   }
 
   if (id) {
-    // ---- UPDATE ----
+
     values.status = document.getElementById("status").value;
     const { error } = await supabaseClient
       .from("service_requests")
@@ -251,7 +224,7 @@ async function handleFormSubmit(e) {
       return;
     }
   } else {
-    // ---- CREATE (BR-06: new requests are always Pending, BR-09: created_at is automatic) ----
+
     const { error } = await supabaseClient
       .from("service_requests")
       .insert([{
@@ -270,9 +243,6 @@ async function handleFormSubmit(e) {
   await loadRequests();
 }
 
-// ---------------------------------------------------------------------
-// DELETE (BR-08: confirmation required before deleting)
-// ---------------------------------------------------------------------
 let pendingDeleteId = null;
 
 function openDeleteModal(id) {
