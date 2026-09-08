@@ -1,5 +1,5 @@
 let currentUser = null;
-let allRequests = []; 
+let allRequests = [];
 
 (async function init() {
   const session = await requireSession();
@@ -24,7 +24,7 @@ async function loadRequests() {
   const { data, error } = await supabaseClient
     .from("service_requests")
     .select("*")
-    .order("id", { ascending: true });
+    .order("created_at", { ascending: false });
 
   if (error) {
     alert("Error loading requests: " + error.message);
@@ -86,9 +86,7 @@ function applyFilters() {
   if (searchTerm) {
     filtered = filtered.filter(r =>
       r.requester_name.toLowerCase().includes(searchTerm) ||
-      r.description.toLowerCase().includes(searchTerm) ||
-      r.priority.toLowerCase().includes(searchTerm) ||
-      r.status.toLowerCase().includes(searchTerm)
+      r.description.toLowerCase().includes(searchTerm)
     );
   }
 
@@ -108,7 +106,7 @@ function renderTable(requests) {
   tbody.innerHTML = "";
 
   if (requests.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" class="empty-row">No matching requests.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" class="empty-row">No matching requests.</td></tr>`;
     return;
   }
 
@@ -118,6 +116,7 @@ function renderTable(requests) {
       <td>${r.id}</td>
       <td>${escapeHtml(r.requester_name)}</td>
       <td>${escapeHtml(r.category)}</td>
+      <td class="desc-cell" title="${escapeHtml(r.description)}">${escapeHtml(truncate(r.description, 60))}</td>
       <td><span class="badge priority-${r.priority.toLowerCase()}">${r.priority}</span></td>
       <td><span class="badge status-${r.status.toLowerCase().replace(" ", "-")}">${r.status}</span></td>
       <td>${new Date(r.created_at).toLocaleDateString()}</td>
@@ -141,6 +140,11 @@ function escapeHtml(str) {
   const div = document.createElement("div");
   div.textContent = str;
   return div.innerHTML;
+}
+
+function truncate(str, maxLen) {
+  if (!str) return "";
+  return str.length > maxLen ? str.slice(0, maxLen) + "…" : str;
 }
 
 function openCreateModal() {

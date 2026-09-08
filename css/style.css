@@ -190,6 +190,14 @@ th { background: #f9fafb; color: var(--muted); font-weight: 600; }
 
 .empty-row { text-align: center; color: var(--muted); padding: 2rem !important; }
 
+.desc-cell {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: help;
+}
+
 .link-btn {
   background: none;
   border: none;
