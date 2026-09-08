@@ -1,130 +1,212 @@
 # ICT Service Request Management System
 
-A web-based CRUD system for logging and tracking ICT service requests, built with
-plain HTML/CSS/JavaScript and a Supabase (PostgreSQL + Auth) backend, deployed on
-GitHub Pages.
-
-**Course:** Systems Analysis and Design (SAD) — Laboratory Exercise 3
+## Laboratory Exercise 3
+### Online Service Request Management System Using GitHub and Supabase
 
 ---
 
-## Student Information
-- **Student:** _[Your Name]_
-- **Section:** _[Your Section]_
-- **GitHub Repository:** _[paste repo URL]_
-- **Live System:** _[paste GitHub Pages URL]_
-- **Test Account:** _submitted separately via LMS, not placed here_
+## 1. System Description
+
+The **ICT Service Request Management System** is a web-based system that allows users to submit and manage ICT service requests.
+
+Users can submit requests for different ICT concerns such as:
+
+- Computer repair
+- Software installation
+- Internet or network problems
+- Printer problems
+- Account or access concerns
+- Other ICT concerns
+
+The system allows users to create, view, search, update, and delete their service requests.
+
+The system uses **HTML, CSS, and JavaScript** for the frontend, **Supabase PostgreSQL** for the database, and **Supabase Authentication** for user login and access control. The system is deployed using **GitHub Pages**.
 
 ---
 
-## Features
-- Login / Logout with Supabase Auth (session-protected dashboard)
-- Dashboard: Total, Pending, In Progress, Completed counts
-- Create / Read / Update / Delete service requests
-- Search by requester name or description
-- Filter by status and priority
-- Row Level Security: users can view all requests but only modify their own
-- Bonus: Request Analytics by category and priority (data-driven, not hard-coded)
+## 2. Problem Statement
+
+ICT service requests can be difficult to manage when they are recorded manually or through different communication channels.
+
+This system was developed to provide a simple online way for users to submit and monitor their ICT service requests.
+
+The system helps organize service requests and allows users to:
+
+- Submit a new service request
+- View submitted requests
+- Search for requests
+- Filter requests by status and priority
+- Update their requests
+- Delete their requests
+- Monitor the status of their requests
 
 ---
 
-## Tech Stack
-| Layer      | Technology                          |
-|------------|--------------------------------------|
-| Front End  | HTML, CSS, JavaScript               |
-| Backend    | Supabase (PostgreSQL + Auth + RLS)  |
-| Hosting    | GitHub Pages                        |
+## 3. Objectives
+
+The main objectives of the system are:
+
+- To create an online ICT service request system.
+- To allow authenticated users to submit service requests.
+- To provide CRUD operations for service requests.
+- To allow users to search and filter requests.
+- To provide a dashboard showing request information.
+- To protect user data using Supabase Authentication and Row Level Security.
+- To deploy the system online using GitHub Pages.
 
 ---
 
-## Project Structure
-```
-sad-service-request/
-├── index.html               # Dashboard + CRUD table (protected page)
-├── login.html                # Login page
-├── css/
-│   └── style.css
-├── js/
-│   ├── supabase.js           # Supabase client init
-│   ├── auth.js               # Login/logout/session guard
-│   └── app.js                # CRUD, search, filter, dashboard, analytics
-├── documentation/
-│   ├── system-analysis.md    # Problem statement, actors, use cases, ERD, traceability
-│   └── setup.sql             # Table creation + RLS policies
-└── README.md
-```
+## 4. Technologies Used
+
+### Frontend
+- HTML
+- CSS
+- JavaScript
+
+### Backend and Database
+- Supabase
+- PostgreSQL
+- Supabase Authentication
+- Row Level Security (RLS)
+
+### Development Tools
+- Visual Studio Code
+- Git
+- GitHub
+
+### Deployment
+- GitHub Pages
+- https://frich10.github.io/SAD-ServiceRequest-Ebon/login.html
+---
+
+## 5. System Features
+
+### User Authentication
+- User login
+- User logout
+- User session management
+- Users must be logged in before managing requests
+
+### Dashboard
+The dashboard displays:
+
+- Total requests
+- Pending requests
+- In Progress requests
+- Completed requests
+
+### Service Request Management
+Users can:
+
+- Create a service request
+- View service requests
+- Update a service request
+- Delete a service request
+
+### Search
+The search function can search using:
+
+- Requester name
+- Description
+- Priority
+- Status
+
+### Filters
+Users can filter requests by:
+
+- Status
+- Priority
 
 ---
 
-## Setup Instructions
+## 6. Service Request Information
 
-### 1. Create a Supabase project
-Go to [supabase.com](https://supabase.com), create a new project, and note your
-**Project URL** and **anon/publishable key** (Project Settings → API).
+Each service request contains the following information:
 
-### 2. Run the database setup
-Open the Supabase **SQL Editor** and run everything in
-`documentation/setup.sql`. This creates the `service_requests` table, enables
-Row Level Security, and adds the required policies.
-
-### 3. Create a test account
-In Supabase, go to **Authentication → Users → Add User**, and create at least
-one test account (email + password) to log in with.
-
-### 4. Configure the front end
-Edit `js/supabase.js` and replace the placeholders:
-```js
-const SUPABASE_URL = "https://YOUR-PROJECT-REF.supabase.co";
-const SUPABASE_KEY = "YOUR-PUBLISHABLE-ANON-KEY";
-```
-**Never** put the `service_role` key here — only the public anon/publishable key.
-
-### 5. Run locally (optional, before deploying)
-Since the app uses only static files, you can open `login.html` directly in a
-browser, or serve the folder with any static server, e.g.:
-```
-npx serve .
-```
-
-### 6. Push to GitHub
-```
-git init
-git add .
-git commit -m "Initial project structure"
-git branch -M main
-git remote add origin https://github.com/USERNAME/SAD-ServiceRequest-Lastname.git
-git push -u origin main
-```
-Make at least four meaningful commits as you build (see suggested commit
-history below).
-
-### 7. Deploy with GitHub Pages
-In the repository: **Settings → Pages → Build and deployment → Deploy from a
-branch → Branch: main, Folder: /(root)**. Your site will be published at:
-```
-https://USERNAME.github.io/SAD-ServiceRequest-Lastname/
-```
+| Field | Description |
+|---|---|
+| ID | Unique request ID |
+| Requester Name | Name of the person requesting service |
+| Department | Department of the requester |
+| Category | Type of ICT concern |
+| Description | Details of the problem |
+| Priority | Low, Medium, or High |
+| Status | Pending, In Progress, or Completed |
+| Created At | Date and time the request was created |
+| User ID | ID of the authenticated user |
 
 ---
 
-## Suggested Commit History
-1. `Initial project structure`
-2. `Add Supabase database integration`
-3. `Implement CRUD operations`
-4. `Add search filtering and deployment`
+## 7. Business Rules
+
+The system follows these rules:
+
+1. The requester name must not be empty.
+2. The department must be provided.
+3. A service category must be selected.
+4. The description must provide enough information about the problem.
+5. Priority must be Low, Medium, or High.
+6. New requests have a default status of Pending.
+7. Users must log in before managing requests.
+8. The system asks for confirmation before deleting a request.
+9. The date and time are automatically recorded.
+10. Unauthorized database modifications are prevented using Row Level Security.
 
 ---
 
-## Use Case Diagram, ERD, and Traceability
-See `documentation/system-analysis.md` for the problem statement, actor
-identification, use case diagram, ERD, business-rule mapping, and requirements
-traceability matrix.
+## 8. Database
 
-## Screenshots
-_[Insert screenshots of the login page, dashboard, request table, create/edit
-modal, and delete confirmation before submission.]_
+The system uses a Supabase PostgreSQL database.
 
-## Test Results
-_[Paste the completed functional test-case table from
-`documentation/system-analysis.md`, with PASS/FAIL filled in, before
-submission.]_
+### Table: `service_requests`
+
+The main table contains:
+
+- `id`
+- `requester_name`
+- `department`
+- `category`
+- `description`
+- `priority`
+- `status`
+- `created_at`
+- `user_id`
+
+### Row Level Security
+
+Row Level Security (RLS) is enabled for the `service_requests` table.
+
+Authenticated users can:
+
+- View service requests
+- Insert their own requests
+- Update their own requests
+- Delete their own requests
+
+The `user_id` is used to identify the authenticated user who created the request.
+
+---
+
+## 9. System Architecture
+
+The system follows a simple web-based architecture:
+
+```text
+User
+  |
+  v
+GitHub Pages
+  |
+  v
+HTML / CSS / JavaScript
+  |
+  v
+Supabase JavaScript Client
+  |
+  +----------------------+
+  |                      |
+  v                      v
+Supabase Auth      PostgreSQL Database
+                       |
+                       v
+                service_requests
