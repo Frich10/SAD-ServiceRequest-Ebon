@@ -132,10 +132,10 @@ function renderTable(requests) {
     return;
   }
 
-  requests.forEach(r => {
+  requests.forEach((r, index) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${r.id}</td>
+      <td>${index + 1}</td>
       <td>${escapeHtml(r.requester_name)}</td>
       <td>${escapeHtml(r.category)}</td>
       <td class="desc-cell" title="${escapeHtml(r.description)}">${escapeHtml(truncate(r.description, 60))}</td>
