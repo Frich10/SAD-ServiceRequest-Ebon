@@ -1,4 +1,3 @@
-
 let currentUser = null;
 let allRequests = []; 
 
